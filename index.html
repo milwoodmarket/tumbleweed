@@ -631,6 +631,36 @@
     @media (max-width: 540px) {
       .nav-links { display: none; }
     }
+
+    /* GALLERY CAROUSEL */
+    #gallery { background: var(--peach); border-top: 1px solid rgba(149,102,67,0.15); overflow: hidden; }
+    .gallery-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 2rem; margin-bottom: 2.5rem; }
+    .gallery-head h2 { font-family: 'Rozha One', serif; font-size: clamp(2rem, 4vw, 3rem); color: var(--chestnut); line-height: 1.18; }
+    .gallery-arrows { display: flex; gap: 0.6rem; flex-shrink: 0; }
+    .gallery-arrows button {
+      width: 3rem; height: 3rem; border-radius: 50%; cursor: pointer;
+      border: 1px solid var(--chestnut); background: transparent; color: var(--chestnut);
+      font-size: 1.2rem; transition: background 0.3s, color 0.3s;
+    }
+    .gallery-arrows button:hover { background: var(--chestnut); color: var(--cream); }
+    .gallery-track {
+      display: flex; gap: 1.25rem; overflow-x: auto; scroll-snap-type: x mandatory;
+      scroll-behavior: smooth; padding: 0.5rem 0 1.5rem; scrollbar-width: none;
+    }
+    .gallery-track::-webkit-scrollbar { display: none; }
+    .gallery-track:focus-visible, .gallery-arrows button:focus-visible { outline: 2px solid var(--chestnut); outline-offset: 4px; }
+    .gallery-slide { flex: 0 0 min(320px, 78vw); scroll-snap-align: start; margin: 0; }
+    .gallery-slide img, .gallery-slide .ph {
+      display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border: 6px solid var(--cream);
+      box-shadow: 0 8px 24px rgba(98,53,40,0.18);
+    }
+    .gallery-slide .ph {
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem;
+      background: linear-gradient(160deg, var(--latte), var(--cinnamon)); color: var(--cream); font-size: 2.4rem;
+    }
+    .gallery-slide .ph span { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.1rem; }
+    @media (prefers-reduced-motion: reduce) { .gallery-track { scroll-behavior: auto; } }
+    @media (max-width: 640px) { .gallery-arrows { display: none; } }
   </style>
 </head>
 <body>
@@ -639,6 +669,7 @@
     <span class="nav-logo">Tumbleweed</span>
     <ul class="nav-links">
       <li><a href="#about">About</a></li>
+      <li><a href="#gallery">Gallery</a></li>
       <li><a href="#pricing">Pricing</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
@@ -677,6 +708,33 @@
           &#128247;
           <span class="deco-label">Your photo here</span>
         </div>
+      </div>
+    </div>
+  </section>
+
+    <section id="gallery">
+    <div class="container">
+      <div class="gallery-head reveal">
+        <div>
+          <p class="section-label">Gallery</p>
+          <h2>Caught on camera.</h2>
+        </div>
+        <div class="gallery-arrows">
+          <button type="button" id="gPrev" aria-label="Previous photos">&#8592;</button>
+          <button type="button" id="gNext" aria-label="Next photos">&#8594;</button>
+        </div>
+      </div>
+    </div>
+    <!-- TO ADD PHOTOS: replace each <div class="ph">...</div> with <img src="photo.jpg" alt="describe the photo" loading="lazy" />. Add or remove <figure> items freely. -->
+    <div class="container">
+      <div class="gallery-track" id="gTrack" tabindex="0" aria-label="Photo gallery">
+      <figure class="gallery-slide"><img src="fiesta with wreath.jpg" alt="fiesta with wreath" loading="lazy" /></figure>
+      <figure class="gallery-slide"><div class="ph" role="img" aria-label="Photo 2 placeholder">&#128247;<span>Photo 2</span></div></figure>
+      <figure class="gallery-slide"><div class="ph" role="img" aria-label="Photo 3 placeholder">&#128247;<span>Photo 3</span></div></figure>
+      <figure class="gallery-slide"><div class="ph" role="img" aria-label="Photo 4 placeholder">&#128247;<span>Photo 4</span></div></figure>
+      <figure class="gallery-slide"><div class="ph" role="img" aria-label="Photo 5 placeholder">&#128247;<span>Photo 5</span></div></figure>
+      <figure class="gallery-slide"><div class="ph" role="img" aria-label="Photo 6 placeholder">&#128247;<span>Photo 6</span></div></figure>
+      <figure class="gallery-slide"><div class="ph" role="img" aria-label="Photo 7 placeholder">&#128247;<span>Photo 7</span></div></figure>
       </div>
     </div>
   </section>
@@ -900,6 +958,11 @@
       btn.style.background = '#623528';
       btn.disabled = true;
     }
+
+    const gTrack = document.getElementById('gTrack');
+    const gStep = () => gTrack.querySelector('.gallery-slide').offsetWidth + 20;
+    document.getElementById('gPrev').addEventListener('click', () => gTrack.scrollBy({ left: -gStep() }));
+    document.getElementById('gNext').addEventListener('click', () => gTrack.scrollBy({ left: gStep() }));
   </script>
 </body>
 </html>
